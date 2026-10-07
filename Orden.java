@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 
-// Aca tenia mal: tenias 'extends Pizza', pero una orden no es una pizza, sino que contiene pizzas
+// Aca puse mal: le puse extends Pizza, pero una orden no es una pizza sino que contiene pizzas
 public class Orden {
 
     private int numeroOrden;
 
-    // Aca tenia mal: faltaba una lista para guardar las pizzas, asi va con ArrayList
+    // Aca me falto: no cree una lista para guardar las pizzas, asi va con ArrayList
     private ArrayList<Pizza> listaPizzas;
 
-    // Aca tenia mal: el constructor se llama igual que la clase (Orden, no 'pizza')
+    // Aca puse mal: le habia puesto de nombre pizza, el constructor debe llamarse Orden
     public Orden(int numeroOrden) {
         this.numeroOrden = numeroOrden;
         this.listaPizzas = new ArrayList<>();
@@ -18,27 +18,48 @@ public class Orden {
         this(1);
     }
 
-    // Aca tenia mal: faltaba el tipo de retorno 'void' y Pizza va con mayuscula
+    // Aca me falto: no le puse tipo de retorno void y Pizza va con mayuscula
     public void agregarPizza(Pizza pizza) {
         this.listaPizzas.add(pizza);
     }
 
-    // Aca tenia mal: faltaba 'void', los tipos y llamar a 'new Pizza' con mayuscula
+    // Aca puse mal: me faltaba void, arreglar los tipos y llamar a new Pizza con mayuscula
     public void crearPizza(String tipoBase, Tipo_salsa salsa, Toppings toppings, int cantidad) {
         Pizza pizza = new Pizza(tipoBase, salsa, toppings, cantidad);
         this.agregarPizza(pizza);
     }
 
-    // Aca tenia mal: faltaba el tipo de retorno (String) y hacerlo public para ver la orden
+    // Aca me falto: ponerle tipo de retorno String y ponerlo public para mostrar la orden
     public String getOrden() {
         if (listaPizzas.isEmpty()) {
-            return "Orden #" + numeroOrden + ": (Vacia)";
+            return "Orden " + numeroOrden + ": (Vacia)";
         }
-        String texto = "Orden #" + numeroOrden + ":\n";
+        String texto = "Detalle de la orden " + numeroOrden + ":\n";
         for (Pizza p : listaPizzas) {
             texto += "  * " + p + "\n";
         }
         return texto;
+    }
+
+    public double calcularTotal() {
+        double total = 0;
+        for (Pizza p : listaPizzas) {
+            total += p.getTotal();
+        }
+        return total;
+    }
+
+    public String generarFactura() {
+        if (listaPizzas.isEmpty()) {
+            return "Orden " + numeroOrden + ": No hay pizzas para facturar.\n";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Factura de la orden ").append(numeroOrden).append(":\n");
+        for (Pizza p : listaPizzas) {
+            sb.append("  * ").append(p.toString()).append("\n");
+        }
+        sb.append("Total a pagar: Q").append(calcularTotal()).append("\n");
+        return sb.toString();
     }
 
     public int getNumeroOrden() { return numeroOrden; }

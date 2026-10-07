@@ -1,50 +1,58 @@
 import java.util.ArrayList;
 
-// Aca tenia mal: tenias 'extends Orden', pero la cocina no es una orden, solo las procesa
+// Aca puse mal: le puse extends Orden, pero la cocina no es una orden sino que las procesa
 public class Cocina {
 
-    // Aca tenia mal: pusiste 'orden_pendientes', ese tipo no existe, asi va: ArrayList<Orden>
+    // Aca puse mal: invente el tipo orden_pendientes, asi va: ArrayList<Orden>
     private ArrayList<Orden> listaOrdenes;
 
-    // Aca tenia mal: el constructor se llama Cocina(), no 'orden_pendientes'
+    // Aca puse mal: le puse orden_pendientes al constructor, debe llamarse Cocina()
     public Cocina() {
         this.listaOrdenes = new ArrayList<>();
     }
 
-    // Aca tenia mal: faltaba el tipo boolean y recibir un objeto tipo Orden
+    // Aca me falto: ponerle tipo boolean y recibir la variable tipo Orden
     public boolean verificarOrden(Orden orden) {
         return orden != null && !orden.estaVacia();
     }
 
-    // Recibe y valida la orden
-    public void recibirOrden(Orden orden) {
-        System.out.println("[COCINA] Recibiendo Orden #" + orden.getNumeroOrden() + "...");
+    public String recibirOrden(Orden orden) {
+        System.out.println("La cocina recibe la orden " + orden.getNumeroOrden() + "...");
         if (verificarOrden(orden)) {
             listaOrdenes.add(orden);
-            System.out.println("[COCINA] Orden #" + orden.getNumeroOrden() + " verificada con exito!");
+            String msg = "Orden " + orden.getNumeroOrden() + " verificada con exito.";
+            System.out.println(msg);
+            return msg;
         } else {
-            System.out.println("[COCINA] Error: La orden esta vacia o es invalida.");
+            String msg = "Error: La orden esta vacia o no es valida.";
+            System.out.println(msg);
+            return msg;
         }
     }
 
-    // Muestra en la terminal el progreso de cocción
-    public void cocinarOrdenes() {
-        System.out.println("\nCOCINANDO EN EL HORNO:");
+    public String cocinarOrdenes() {
         if (listaOrdenes.isEmpty()) {
-            System.out.println("No hay ordenes para cocinar.");
-            return;
+            String msg = "No hay ordenes para cocinar.";
+            System.out.println(msg);
+            return msg;
         }
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("Cocinando en el horno:\n");
         for (Orden orden : listaOrdenes) {
-            System.out.println("\n>> Preparando Orden #" + orden.getNumeroOrden() + ":");
+            sb.append("\nPreparando orden ").append(orden.getNumeroOrden()).append(":\n");
             for (Pizza pizza : orden.getPizzas()) {
-                System.out.println("   -> Horneando " + pizza.getCantidad() + " pizza(s) con base " 
-                    + pizza.getTipoBase() + ", salsa " + pizza.getSalsa() 
-                    + " y " + pizza.getToppings());
+                sb.append("  Horneando ").append(pizza.getCantidad()).append(" pizza(s) con base ") 
+                    .append(pizza.getTipoBase()).append(", salsa ").append(pizza.getSalsa()) 
+                    .append(" y ").append(pizza.getToppings()).append("...\n");
             }
-            System.out.println("   [OK] Orden #" + orden.getNumeroOrden() + " lista!");
+            sb.append("  Orden ").append(orden.getNumeroOrden()).append(" lista para entregar.\n");
         }
         listaOrdenes.clear();
-        System.out.println("\n[COCINA] Todo despachado.");
+        sb.append("\nTodas las ordenes listas.");
+
+        String resultado = sb.toString();
+        System.out.println(resultado);
+        return resultado;
     }
 }
